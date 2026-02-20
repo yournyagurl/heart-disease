@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Disease · Step-by-Step Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #fff0f5;
+  --bg2:       #fde8f0;
+  --paper:     #ffffff;
+  --rose:      #e8527a;
+  --rose-deep: #c73060;
+  --rose-soft: #f4a7be;
+  --blush:     #f9d0de;
+  --lilac:     #d4a8d4;
+  --lilac-soft:#ede0f5;
+  --gold:      #c9935a;
+  --ink:       #3d1a2e;
+  --muted:     #9b6b80;
+  --rule:      #f0c8d8;
+  --c45:       #e8527a;
+  --cart:      #9b6bbd;
+  --pruned:    #5baa7e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+/* HEARTS BG */
+.hearts-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.heart-float{position:absolute;opacity:.07;animation:floatUp linear infinite;}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}10%{opacity:.07;}90%{opacity:.07;}100%{transform:translateY(-100px) rotate(360deg);opacity:0;}}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--rose),var(--lilac),var(--rose-soft));transition:width .15s;width:0%;}
+
+/* HEADER */
+header{position:relative;z-index:1;background:linear-gradient(135deg,#fce4ec 0%,#f8bbd9 40%,#e1bee7 100%);padding:72px 48px 64px;text-align:center;border-bottom:2px solid var(--blush);overflow:hidden;}
+header::before{content:'♡';position:absolute;top:20px;left:40px;font-size:80px;color:rgba(232,82,122,.1);font-family:serif;}
+header::after{content:'♡';position:absolute;bottom:10px;right:40px;font-size:120px;color:rgba(212,168,212,.15);font-family:serif;}
+.header-script{font-family:'Pinyon Script',cursive;font-size:28px;color:var(--rose);margin-bottom:8px;display:block;}
+header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,6vw,64px);font-weight:600;line-height:1.1;color:var(--ink);margin-bottom:18px;}
+header h1 em{font-style:italic;color:var(--rose-deep);}
+.header-sub{font-size:15px;font-weight:300;color:var(--muted);max-width:500px;margin:0 auto 28px;line-height:1.8;}
+.header-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+.hbadge{background:rgba(255,255,255,.7);border:1px solid var(--rule);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--rose-deep);}
+
+/* NAV */
+.step-nav{position:sticky;top:0;z-index:100;background:rgba(255,240,245,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);padding:0 32px;display:flex;gap:0;overflow-x:auto;}
+.step-nav a{display:flex;align-items:center;gap:8px;padding:14px 18px;font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+.step-nav a:hover,.step-nav a.active{color:var(--rose);border-bottom-color:var(--rose);}
+.nav-num{width:20px;height:20px;border-radius:50%;background:var(--blush);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--rose-deep);font-weight:700;flex-shrink:0;}
+.step-nav a.active .nav-num{background:var(--rose);color:white;}
+
+/* MAIN */
+main{max-width:900px;margin:0 auto;padding:0 28px 100px;position:relative;z-index:1;}
+
+/* STEP */
+.step{margin-top:80px;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.step.visible{opacity:1;transform:none;}
+.step-header{display:flex;align-items:center;gap:18px;margin-bottom:24px;}
+.step-badge{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--rose-deep));display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(232,82,122,.3);}
+.step-badge-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:white;}
+.step-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rose);margin-bottom:4px;}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3.5vw,32px);font-weight:600;line-height:1.2;color:var(--ink);}
+.step-body{font-size:14.5px;font-weight:300;color:var(--muted);line-height:1.85;margin-bottom:24px;}
+.step-body strong{color:var(--ink);font-weight:600;}
+
+/* CARD */
+.card{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:24px 28px;margin-bottom:16px;box-shadow:0 2px 20px rgba(232,82,122,.06);}
+.card-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rose-soft);margin-bottom:16px;}
+
+/* INFO STRIP */
+.info-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px;}
+.info-cell{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;text-align:center;box-shadow:0 2px 12px rgba(232,82,122,.05);}
+.info-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--rose-deep);line-height:1;}
+.info-lbl{font-size:11px;font-weight:600;color:var(--muted);margin-top:4px;}
+
+/* BALANCE BAR */
+.bal-bar{display:flex;height:40px;border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.bal-no{background:linear-gradient(90deg,#9b6bbd,#b88fd4);display:flex;align-items:center;justify-content:center;}
+.bal-yes{background:linear-gradient(90deg,#e8527a,#c73060);display:flex;align-items:center;justify-content:center;}
+.bal-txt{font-size:12px;font-weight:700;color:white;}
+.bal-legend{display:flex;gap:20px;}
+.bal-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:300;}
+.bal-dot{width:10px;height:10px;border-radius:3px;}
+
+/* PIPELINE */
+.pipeline{display:flex;flex-direction:column;}
+.pipe-row{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--rule);}
+.pipe-row:last-child{border-bottom:none;}
+.pipe-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blush),#f9e0ea);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.pipe-text strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.pipe-text span{font-size:13px;color:var(--muted);font-weight:300;}
+.pipe-chip{display:inline-block;margin-top:6px;background:var(--bg2);border:1px solid var(--rule);border-radius:100px;padding:3px 12px;font-size:11px;font-weight:600;color:var(--rose-deep);}
+
+/* METRIC BARS */
+.metric-group{margin-bottom:22px;}
+.metric-group-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.metric-group-title::after{content:'';flex:1;height:1px;background:var(--rule);}
+.mrow{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.mrow-name{display:flex;align-items:center;gap:8px;min-width:130px;font-size:13px;font-weight:600;color:var(--ink);}
+.mdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.mtrack{flex:1;height:28px;background:var(--bg);border:1px solid var(--rule);border-radius:100px;overflow:hidden;}
+.mfill{height:100%;border-radius:100px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;transition:width 1.3s cubic-bezier(.34,1.56,.64,1);width:0%;}
+.mfill span{font-size:11px;font-weight:700;color:white;white-space:nowrap;}
+.mbest{font-size:13px;min-width:28px;text-align:right;}
+
+/* CONFUSION MATRIX */
+.cm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.cm-card{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:22px;box-shadow:0 2px 16px rgba(232,82,122,.05);}
+.cm-model-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px;}
+.cm-model-dot{width:10px;height:10px;border-radius:50%;}
+.cm-matrix{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.cm-cell{border-radius:10px;padding:14px 10px;text-align:center;}
+.cm-cell.tp{background:#dcfce7;border:1px solid #86efac;}
+.cm-cell.tn{background:#ede9fe;border:1px solid #c4b5fd;}
+.cm-cell.fp{background:#fef9c3;border:1px solid #fde047;}
+.cm-cell.fn{background:#ffe4e6;border:1px solid #fca5a5;}
+.cm-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;}
+.cm-cell.tp .cm-num{color:#16a34a;}
+.cm-cell.tn .cm-num{color:#7c3aed;}
+.cm-cell.fp .cm-num{color:#ca8a04;}
+.cm-cell.fn .cm-num{color:#dc2626;}
+.cm-tag{font-size:10px;font-weight:700;color:var(--muted);margin-top:4px;}
+.cm-note{font-size:12px;color:var(--muted);line-height:1.6;}
+.cm-hl{color:var(--rose-deep);font-weight:700;}
+
+/* FEATURE BARS */
+.feat-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.feat-name{font-size:13px;font-weight:600;color:var(--ink);min-width:200px;max-width:200px;}
+.feat-track{flex:1;height:24px;background:var(--bg);border:1px solid var(--rule);border-radius:100px;overflow:hidden;}
+.feat-fill{height:100%;border-radius:100px;transition:width 1.3s cubic-bezier(.34,1.56,.64,1);width:0%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.feat-fill span{font-size:10px;font-weight:700;color:white;}
+.feat-pct{font-size:12px;font-weight:700;color:var(--ink);min-width:42px;text-align:right;}
+
+/* VERDICT */
+.verdict-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.verdict-card{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:22px;border-top:3px solid var(--rule);box-shadow:0 2px 16px rgba(232,82,122,.05);transition:transform .2s,box-shadow .2s;}
+.verdict-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(232,82,122,.12);}
+.verdict-card.rose{border-top-color:var(--c45);}
+.verdict-card.lilac{border-top-color:var(--cart);}
+.verdict-card.green{border-top-color:var(--pruned);}
+.verdict-icon{font-size:28px;margin-bottom:10px;}
+.verdict-name{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.verdict-score{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1;margin-bottom:8px;}
+.verdict-card.rose .verdict-score{color:var(--c45);}
+.verdict-card.lilac .verdict-score{color:var(--cart);}
+.verdict-card.green .verdict-score{color:var(--pruned);}
+.verdict-body{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;}
+
+/* CALLOUT */
+.callout{background:linear-gradient(135deg,#fce4ec,#f3e5f5);border:1px solid var(--rule);border-radius:16px;padding:22px 26px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start;}
+.callout-icon{font-size:24px;flex-shrink:0;margin-top:2px;}
+.callout-text strong{display:block;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.callout-text span{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+
+/* DIVIDER */
+.divider{text-align:center;margin:48px 0 0;color:var(--rose-soft);font-size:20px;letter-spacing:12px;}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 24px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted);font-weight:300;position:relative;z-index:1;}
+footer span{color:var(--rose);}
+
+@keyframes heartPop{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+.heartpop{display:inline-block;animation:heartPop 1.2s ease infinite;}
+
+@media(max-width:600px){
+  header,main{padding-left:16px;padding-right:16px;}
+  .step-nav{padding:0 12px;}
+  .feat-name{min-width:130px;max-width:130px;font-size:12px;}
+  .mrow-name{min-width:100px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsContainer"></div>
+<div id="progress"></div>
+
+<header>
+  <span class="header-script">a pretty little breakdown of</span>
+  <h1>Heart Disease<br><em>Classification</em> Results</h1>
+  <p class="header-sub">A step-by-step visual walkthrough of your C4.5, CART, and pruned CART models — from raw data all the way to final predictions.</p>
+  <div class="header-badges">
+    <span class="hbadge">✦ 302 instances</span>
+    <span class="hbadge">✦ 13 features</span>
+    <span class="hbadge">✦ 3 models</span>
+    <span class="hbadge">✦ best recall: 87.9%</span>
+  </div>
+</header>
+
+<nav class="step-nav">
+  <a href="#step1" class="active"><span class="nav-num">1</span>Dataset</a>
+  <a href="#step2"><span class="nav-num">2</span>Preprocessing</a>
+  <a href="#step3"><span class="nav-num">3</span>Training</a>
+  <a href="#step4"><span class="nav-num">4</span>Metrics</a>
+  <a href="#step5"><span class="nav-num">5</span>Confusion</a>
+  <a href="#step6"><span class="nav-num">6</span>Pruning</a>
+  <a href="#step7"><span class="nav-num">7</span>Features</a>
+  <a href="#step8"><span class="nav-num">8</span>Verdict</a>
+</nav>
+
+<main>
+
+<!-- STEP 1 -->
+<section class="step" id="step1">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">1</span></div>
+    <div><div class="step-tag">Step One</div><div class="step-title">The Dataset 🌸</div></div>
+  </div>
+  <p class="step-body">We're using the <strong>Cleveland Heart Disease dataset</strong>. After removing duplicate rows (the Kaggle version had 1,025 rows but 723 were duplicates!), we're left with <strong>302 clean unique patients</strong>. The goal: predict whether each patient has heart disease based on 13 clinical measurements.</p>
+
+  <div class="info-strip">
+    <div class="info-cell"><div class="info-val">302</div><div class="info-lbl">Clean Rows</div></div>
+    <div class="info-cell"><div class="info-val">13</div><div class="info-lbl">Features</div></div>
+    <div class="info-cell"><div class="info-val">160</div><div class="info-lbl">No Disease</div></div>
+    <div class="info-cell"><div class="info-val">142</div><div class="info-lbl">Disease</div></div>
+    <div class="info-cell"><div class="info-val">53/47</div><div class="info-lbl">% Split</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Class Balance — Nearly Equal ✨</div>
+    <div class="bal-bar">
+      <div class="bal-no" style="width:52.9%"><span class="bal-txt">No Disease · 160</span></div>
+      <div class="bal-yes" style="width:47.1%"><span class="bal-txt">Disease · 142</span></div>
+    </div>
+    <div class="bal-legend">
+      <div class="bal-item"><div class="bal-dot" style="background:var(--cart)"></div>No Heart Disease (0) — 160 patients</div>
+      <div class="bal-item"><div class="bal-dot" style="background:var(--c45)"></div>Heart Disease (1) — 142 patients</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-text">
+      <strong>Why balance matters</strong>
+      <span>With a roughly 50/50 split, accuracy is a meaningful metric here — unlike imbalanced datasets where a lazy model could score 80% by always predicting the majority class without learning anything.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 2 -->
+<section class="step" id="step2">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">2</span></div>
+    <div><div class="step-tag">Step Two</div><div class="step-title">Preprocessing 🎀</div></div>
+  </div>
+  <p class="step-body">Before any learning can happen, the data needs to be cleaned and converted. Decision trees need numbers — so categorical columns get turned into binary yes/no columns using <strong>One-Hot Encoding</strong>.</p>
+
+  <div class="card">
+    <div class="card-label">What Happens & Why — Step by Step</div>
+    <div class="pipeline">
+      <div class="pipe-row">
+        <div class="pipe-icon">🗑️</div>
+        <div class="pipe-text">
+          <strong>Remove Duplicates</strong>
+          <span>The Kaggle heart.csv has 1,025 rows but only 302 are unique. Duplicates leak into both train and test sets, causing fake perfect scores — like the 100% accuracy we saw earlier!</span>
+          <div class="pipe-chip">1,025 → 302 rows</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon">🔢</div>
+        <div class="pipe-text">
+          <strong>Binarise Target</strong>
+          <span>Original values are 0–4 (severity). We simplify: 0 stays 0 (healthy), anything 1–4 becomes 1 (disease present). Binary classification is cleaner and clinically meaningful.</span>
+          <div class="pipe-chip">0,1,2,3,4 → 0 or 1</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon">🏷️</div>
+        <div class="pipe-text">
+          <strong>One-Hot Encode Categoricals</strong>
+          <span>8 categorical columns (sex, cp, fbs, restecg, exang, slope, ca, thal) expand into binary yes/no columns — the model won't treat category 3 as "bigger" than category 1.</span>
+          <div class="pipe-chip">13 features → 28 columns</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon">✂️</div>
+        <div class="pipe-text">
+          <strong>Stratified 80/20 Split</strong>
+          <span>241 rows for training, 61 for testing. Stratified means the 53/47% class balance is preserved in both subsets so the test set is representative.</span>
+          <div class="pipe-chip">241 train · 61 test</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon">⚖️</div>
+        <div class="pipe-text">
+          <strong>Balanced Class Weights</strong>
+          <span>class_weight='balanced' penalises missed disease cases more heavily. With near-equal classes the effect is small, but it's important practice for imbalanced medical data.</span>
+          <div class="pipe-chip">class_weight='balanced'</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 3 -->
+<section class="step" id="step3">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">3</span></div>
+    <div><div class="step-tag">Step Three</div><div class="step-title">Training the Models 💻</div></div>
+  </div>
+  <p class="step-body">Three models are trained on the same 241 rows. The only differences are <strong>how they choose which feature to split on</strong> at each decision node, and whether branches get pruned afterwards.</p>
+
+  <div class="card">
+    <div class="card-label">How Each Model Makes Decisions</div>
+    <div class="pipeline">
+      <div class="pipe-row">
+        <div class="pipe-icon" style="background:linear-gradient(135deg,#fce4ec,#f9d0de)">🌹</div>
+        <div class="pipe-text">
+          <strong>C4.5 — criterion="entropy"</strong>
+          <span>Asks: "Which split most reduces uncertainty?" Uses entropy (information theory). Corrects for attributes with many categories using Gain Ratio. Grew to depth 9 with 33 leaf nodes.</span>
+          <div class="pipe-chip" style="color:var(--c45)">Entropy · Gain Ratio · depth 9 · 33 leaves</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon" style="background:linear-gradient(135deg,#ede0f5,#ddd0f0)">💜</div>
+        <div class="pipe-text">
+          <strong>CART — criterion="gini"</strong>
+          <span>Asks: "Which split minimises misclassification probability?" Uses Gini Impurity — faster maths. Always binary splits. No pruning on small data = overfits badly.</span>
+          <div class="pipe-chip" style="color:var(--cart)">Gini Impurity · Binary splits · depth ? · 29 leaves</div>
+        </div>
+      </div>
+      <div class="pipe-row">
+        <div class="pipe-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🌿</div>
+        <div class="pipe-text">
+          <strong>CART Pruned — ccp_alpha tuned by CV</strong>
+          <span>Same as CART but branches that don't justify their complexity are removed. Alpha selected by 5-fold cross-validation on the training set. Reduces to 24 leaves.</span>
+          <div class="pipe-chip" style="color:var(--pruned)">Gini · Cost-Complexity Pruning · 24 leaves</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 4 -->
+<section class="step" id="step4">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">4</span></div>
+    <div><div class="step-tag">Step Four</div><div class="step-title">Performance Metrics 📊</div></div>
+  </div>
+  <p class="step-body">Each model is evaluated on the <strong>61 test instances it never saw during training</strong>. Four metrics give us the full picture — because accuracy alone hides class-specific failures.</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-label">What Each Metric Actually Means 💕</div>
+    <div class="pipeline">
+      <div class="pipe-row"><div class="pipe-icon">🎯</div><div class="pipe-text"><strong>Accuracy</strong><span>"What % of all predictions were correct?" — Reliable here because classes are balanced.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🔍</div><div class="pipe-text"><strong>Precision</strong><span>"When we predicted disease, how often were we right?" — High precision = few false alarms.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🩺</div><div class="pipe-text"><strong>Recall ← most important</strong><span>"Of all real disease cases, how many did we catch?" — Missing a diagnosis is dangerous. This is the metric that matters most clinically.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">⚖️</div><div class="pipe-text"><strong>F1 Score</strong><span>"Balance between precision and recall." — Best single number to rank models fairly.</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Side-by-Side Comparison — Your Actual Results</div>
+
+    <div class="metric-group">
+      <div class="metric-group-title">Accuracy</div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--c45)"></div>C4.5</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#e8527a,#c73060)" data-w="78.69"><span>78.7%</span></div></div><div class="mbest">👑</div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--cart)"></div>CART</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#9b6bbd,#7c4fa0)" data-w="68.85"><span>68.9%</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--pruned)"></div>Pruned</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#5baa7e,#3d8a60)" data-w="77.05"><span>77.1%</span></div></div><div class="mbest"></div></div>
+    </div>
+
+    <div class="metric-group">
+      <div class="metric-group-title">Precision</div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--c45)"></div>C4.5</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#e8527a,#c73060)" data-w="83.33"><span>83.3%</span></div></div><div class="mbest">👑</div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--cart)"></div>CART</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#9b6bbd,#7c4fa0)" data-w="73.33"><span>73.3%</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--pruned)"></div>Pruned</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#5baa7e,#3d8a60)" data-w="74.36"><span>74.4%</span></div></div><div class="mbest"></div></div>
+    </div>
+
+    <div class="metric-group">
+      <div class="metric-group-title">Recall 🩺 Most Important in Medicine</div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--c45)"></div>C4.5</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#e8527a,#c73060)" data-w="75.76"><span>75.8%</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--cart)"></div>CART</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#9b6bbd,#7c4fa0)" data-w="66.67"><span>66.7%</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--pruned)"></div>Pruned</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#5baa7e,#3d8a60)" data-w="87.88"><span>87.9%</span></div></div><div class="mbest">👑</div></div>
+    </div>
+
+    <div class="metric-group">
+      <div class="metric-group-title">F1 Score</div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--c45)"></div>C4.5</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#e8527a,#c73060)" data-w="79.37"><span>0.794</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--cart)"></div>CART</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#9b6bbd,#7c4fa0)" data-w="69.84"><span>0.698</span></div></div><div class="mbest"></div></div>
+      <div class="mrow"><div class="mrow-name"><div class="mdot" style="background:var(--pruned)"></div>Pruned</div><div class="mtrack"><div class="mfill" style="background:linear-gradient(90deg,#5baa7e,#3d8a60)" data-w="80.56"><span>0.806</span></div></div><div class="mbest">👑</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 5 -->
+<section class="step" id="step5">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">5</span></div>
+    <div><div class="step-tag">Step Five</div><div class="step-title">Confusion Matrices 🔢</div></div>
+  </div>
+  <p class="step-body">A confusion matrix breaks predictions into four boxes. The most important for heart disease is <strong>False Negatives</strong> — real disease cases the model missed. These are the dangerous errors because the patient goes home thinking they're fine.</p>
+
+  <div class="callout">
+    <div class="callout-icon">🩺</div>
+    <div class="callout-text">
+      <strong>How to read each box</strong>
+      <span><strong style="color:#16a34a">True Positive (TP)</strong> = correctly caught disease &nbsp;·&nbsp; <strong style="color:#7c3aed">True Negative (TN)</strong> = correctly identified healthy &nbsp;·&nbsp; <strong style="color:#dc2626">False Negative (FN)</strong> = missed disease ← worst! &nbsp;·&nbsp; <strong style="color:#ca8a04">False Positive (FP)</strong> = unnecessary false alarm</span>
+    </div>
+  </div>
+
+  <div class="cm-grid">
+    <div class="cm-card">
+      <div class="cm-model-name"><div class="cm-model-dot" style="background:var(--c45)"></div>C4.5</div>
+      <div class="cm-matrix">
+        <div class="cm-cell tn"><div class="cm-num">23</div><div class="cm-tag">True Neg.</div></div>
+        <div class="cm-cell fp"><div class="cm-num">5</div><div class="cm-tag">False Pos.</div></div>
+        <div class="cm-cell fn"><div class="cm-num">8</div><div class="cm-tag">False Neg. ⚠️</div></div>
+        <div class="cm-cell tp"><div class="cm-num">25</div><div class="cm-tag">True Pos.</div></div>
+      </div>
+      <div class="cm-note">Missed <span class="cm-hl">8 disease cases</span>. Fewest false alarms (5).</div>
+    </div>
+    <div class="cm-card">
+      <div class="cm-model-name"><div class="cm-model-dot" style="background:var(--cart)"></div>CART</div>
+      <div class="cm-matrix">
+        <div class="cm-cell tn"><div class="cm-num">20</div><div class="cm-tag">True Neg.</div></div>
+        <div class="cm-cell fp"><div class="cm-num">8</div><div class="cm-tag">False Pos.</div></div>
+        <div class="cm-cell fn"><div class="cm-num">11</div><div class="cm-tag">False Neg. ⚠️</div></div>
+        <div class="cm-cell tp"><div class="cm-num">22</div><div class="cm-tag">True Pos.</div></div>
+      </div>
+      <div class="cm-note">Missed <span class="cm-hl">11 disease cases</span> — worst of the three.</div>
+    </div>
+    <div class="cm-card" style="border:2px solid #86efac">
+      <div class="cm-model-name"><div class="cm-model-dot" style="background:var(--pruned)"></div>CART Pruned ✨</div>
+      <div class="cm-matrix">
+        <div class="cm-cell tn"><div class="cm-num">18</div><div class="cm-tag">True Neg.</div></div>
+        <div class="cm-cell fp"><div class="cm-num">10</div><div class="cm-tag">False Pos.</div></div>
+        <div class="cm-cell fn"><div class="cm-num">4</div><div class="cm-tag">False Neg. ✓</div></div>
+        <div class="cm-cell tp"><div class="cm-num">29</div><div class="cm-tag">True Pos.</div></div>
+      </div>
+      <div class="cm-note">Only missed <span style="color:#16a34a;font-weight:700">4 disease cases</span>. Best for clinical use.</div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <div class="callout-icon">💡</div>
+    <div class="callout-text">
+      <strong>The trade-off in plain English</strong>
+      <span>Pruned CART sends more false alarms (10 vs 5 for C4.5) but only misses 4 real cases vs 8. In medicine this is always the right trade-off — a false alarm leads to more tests, a missed diagnosis can be fatal.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 6 -->
+<section class="step" id="step6">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">6</span></div>
+    <div><div class="step-tag">Step Six</div><div class="step-title">Why Pruning Helped ✂️</div></div>
+  </div>
+  <p class="step-body">Pruning is the single most impactful thing in this experiment. Without it, CART <strong>memorises the 241 training patients including their noise</strong>, then struggles on new ones. Pruning removes branches that don't reflect genuine patterns.</p>
+
+  <div class="card">
+    <div class="card-label">Before vs After Pruning</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div style="background:var(--bg2);border-radius:12px;padding:20px;text-align:center;border:1px solid var(--rule)">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">CART Unpruned</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:600;color:var(--cart);line-height:1">29</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">leaf nodes · F1: 0.698</div>
+      </div>
+      <div style="background:#f0fdf4;border-radius:12px;padding:20px;text-align:center;border:2px solid #86efac">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">CART Pruned ✨</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:600;color:var(--pruned);line-height:1">24</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">leaf nodes · F1: 0.806 · −17%</div>
+      </div>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-row"><div class="pipe-icon">1️⃣</div><div class="pipe-text"><strong>Grow the full tree</strong><span>CART builds until training is memorised — 29 leaves, overfit.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">2️⃣</div><div class="pipe-text"><strong>Generate candidate alphas</strong><span>The pruning path provides a list of α values — each removes more branches. Higher α = simpler tree.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">3️⃣</div><div class="pipe-text"><strong>5-fold cross-validation</strong><span>Training data is split into 5 groups. For each α, train on 4, validate on 1 — five times — average the F1 scores. Every row gets validated exactly once.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">4️⃣</div><div class="pipe-text"><strong>Pick the best α &amp; retrain</strong><span>The α with the highest average CV F1 is used to build the final pruned tree. 29 → 24 leaves.</span><div class="pipe-chip" style="color:var(--pruned)">Recall: 66.7% → 87.9% &nbsp;·&nbsp; F1: 0.698 → 0.806</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 7 -->
+<section class="step" id="step7">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">7</span></div>
+    <div><div class="step-tag">Step Seven</div><div class="step-title">Feature Importances 🌺</div></div>
+  </div>
+  <p class="step-body">After training, the pruned CART model tells us exactly which features it actually used. Remarkably, only <strong>3 features out of 28</strong> do all the work — everything else was pruned away as noise. This makes the model beautifully interpretable.</p>
+
+  <div class="card">
+    <div class="card-label">What the Model Actually Learned to Look At</div>
+    <div style="margin-bottom:24px">
+      <div class="feat-bar-row">
+        <div class="feat-name">🫀 Chest Pain (cp_0)</div>
+        <div class="feat-track"><div class="feat-fill" style="background:linear-gradient(90deg,#e8527a,#c73060)" data-w="70.85"><span>70.9%</span></div></div>
+        <div class="feat-pct">70.9%</div>
+      </div>
+      <div class="feat-bar-row">
+        <div class="feat-name">🧬 Thalassemia (thal_2)</div>
+        <div class="feat-track"><div class="feat-fill" style="background:linear-gradient(90deg,#9b6bbd,#7c4fa0)" data-w="17.20"><span>17.2%</span></div></div>
+        <div class="feat-pct">17.2%</div>
+      </div>
+      <div class="feat-bar-row">
+        <div class="feat-name">🔬 Vessels (ca_0)</div>
+        <div class="feat-track"><div class="feat-fill" style="background:linear-gradient(90deg,#5baa7e,#3d8a60)" data-w="11.95"><span>12.0%</span></div></div>
+        <div class="feat-pct">12.0%</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <div style="background:var(--bg2);border-radius:10px;padding:16px;border:1px solid var(--rule)">
+        <div style="font-weight:700;font-size:13px;color:var(--c45);margin-bottom:6px">🫀 cp_0 · 70.9%</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Asymptomatic chest pain. Patients with heart disease often show no typical symptoms — making its absence a paradoxically strong predictor.</div>
+      </div>
+      <div style="background:var(--lilac-soft);border-radius:10px;padding:16px;border:1px solid #ddd0f0">
+        <div style="font-weight:700;font-size:13px;color:var(--cart);margin-bottom:6px">🧬 thal_2 · 17.2%</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Reversible thalassemia defect. Indicates areas of the heart with reduced blood flow under stress — a direct clinical marker of coronary artery disease.</div>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid #86efac">
+        <div style="font-weight:700;font-size:13px;color:var(--pruned);margin-bottom:6px">🔬 ca_0 · 12.0%</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Zero major vessels visible by fluoroscopy. Healthy vessels show up clearly — none visible suggests blockages restricting blood flow.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-icon">✨</div>
+    <div class="callout-text">
+      <strong>Clinically meaningful!</strong>
+      <span>All three features the pruned model selected align directly with known cardiac disease indicators in medical literature. A model explainable with just three questions — any clinician could understand and audit every single prediction.</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider">♡ ♡ ♡</div>
+
+<!-- STEP 8 -->
+<section class="step" id="step8">
+  <div class="step-header">
+    <div class="step-badge"><span class="step-badge-num">8</span></div>
+    <div><div class="step-tag">Step Eight</div><div class="step-title">Final Verdict 🏆</div></div>
+  </div>
+  <p class="step-body">Here's the complete picture. Each model has its strengths — but for a medical classification task where <strong>missing a diagnosis is the worst possible error</strong>, CART Pruned wins clearly.</p>
+
+  <div class="verdict-grid">
+    <div class="verdict-card rose">
+      <div class="verdict-icon">🌹</div>
+      <div class="verdict-name">C4.5</div>
+      <div class="verdict-score">0.794</div>
+      <div style="font-size:11px;font-weight:700;color:var(--c45);margin-bottom:10px">F1 · Best Precision (83.3%)</div>
+      <div class="verdict-body">Most careful about false alarms — only 5. But misses 8 real disease cases. Best choice if sending people for unnecessary tests is very costly. Outperforms unpruned CART overall.</div>
+    </div>
+    <div class="verdict-card lilac">
+      <div class="verdict-icon">💜</div>
+      <div class="verdict-name">CART</div>
+      <div class="verdict-score">0.698</div>
+      <div style="font-size:11px;font-weight:700;color:var(--cart);margin-bottom:10px">F1 · Weakest Overall</div>
+      <div class="verdict-body">Overfits on just 241 training rows. Misses 11 disease cases — worst of the three. Without pruning, CART memorises noise instead of learning real patterns on small datasets.</div>
+    </div>
+    <div class="verdict-card green">
+      <div class="verdict-icon">🏆</div>
+      <div class="verdict-name">CART Pruned</div>
+      <div class="verdict-score">0.806</div>
+      <div style="font-size:11px;font-weight:700;color:var(--pruned);margin-bottom:10px">F1 · Best Recall (87.9%) · Recommended</div>
+      <div class="verdict-body">Catches 29 of 33 disease cases. Only misses 4. More false alarms (10) but that's the right medical trade-off. Also the most interpretable — just 3 features drive every decision.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px;background:linear-gradient(135deg,#fce4ec,#f3e5f5)">
+    <div class="card-label">The 4 Things to Remember 💕</div>
+    <div class="pipeline">
+      <div class="pipe-row"><div class="pipe-icon">🎀</div><div class="pipe-text"><strong>Pruning beats algorithm choice</strong><span>Pruning improved CART's recall by 21 points and F1 by 0.108. The C4.5 vs CART gap was only ~10 points accuracy. Pruning matters more than which algorithm you pick.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🎀</div><div class="pipe-text"><strong>Small datasets amplify overfitting</strong><span>With only 302 rows, unpruned trees memorise training noise easily. This is why CART unpruned scored worst despite being a strong algorithm on larger datasets.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🎀</div><div class="pipe-text"><strong>Recall is the right metric here</strong><span>Even though CART Pruned has lower accuracy than C4.5 (77.1% vs 78.7%), it catches 4 more disease cases. In medicine, that's what actually matters.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🎀</div><div class="pipe-text"><strong>3 features tell the whole story</strong><span>Chest pain type, thalassemia result, and vessel count explain everything. A beautifully simple, clinically interpretable model that any doctor could audit and trust.</span></div></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>made with <span class="heartpop">♡</span> for CO6226 · Cleveland Heart Disease Dataset · C4.5 vs CART</footer>
+
+<script>
+// floating hearts
+const c = document.getElementById('heartsContainer');
+['♡','♥','✿','❀','✦'].forEach((ch, i) => {
+  for (let j = 0; j < 4; j++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = ch;
+    h.style.cssText = `left:${Math.random()*100}%;font-size:${12+Math.random()*14}px;animation-duration:${13+Math.random()*14}s;animation-delay:${Math.random()*13}s;`;
+    c.appendChild(h);
+  }
+});
+
+// progress bar
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  document.getElementById('progress').style.width = (window.scrollY / (d.scrollHeight - d.clientHeight) * 100) + '%';
+});
+
+// reveal + animate bars on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    setTimeout(() => {
+      e.target.querySelectorAll('.mfill[data-w]').forEach(b => b.style.width = b.dataset.w + '%');
+      e.target.querySelectorAll('.feat-fill[data-w]').forEach(b => b.style.width = b.dataset.w + '%');
+    }, 250);
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.step').forEach(s => obs.observe(s));
+
+// nav highlight
+const navLinks = document.querySelectorAll('.step-nav a');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const a = document.querySelector(`.step-nav a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('.step').forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>
