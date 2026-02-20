@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heart Disease · Step-by-Step Breakdown</title>
+<title>C4.5 and CART comparision - Heart Disease Dataset</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;600;700&family=Pinyon+Script&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -183,7 +183,7 @@ footer span{color:var(--rose);}
 <header>
   <span class="header-script">a pretty little breakdown of</span>
   <h1>Heart Disease<br><em>Classification</em> Results</h1>
-  <p class="header-sub">A step-by-step visual walkthrough of your C4.5, CART, and pruned CART models — from raw data all the way to final predictions.</p>
+  <p class="header-sub">A step-by-step visual walkthrough of your C4.5, CART, and pruned CART models - from raw data all the way to final predictions.</p>
   <div class="header-badges">
     <span class="hbadge">✦ 302 instances</span>
     <span class="hbadge">✦ 13 features</span>
@@ -222,14 +222,14 @@ footer span{color:var(--rose);}
   </div>
 
   <div class="card">
-    <div class="card-label">Class Balance — Nearly Equal ✨</div>
+    <div class="card-label">Class Balance - Nearly Equal ✨</div>
     <div class="bal-bar">
       <div class="bal-no" style="width:52.9%"><span class="bal-txt">No Disease · 160</span></div>
       <div class="bal-yes" style="width:47.1%"><span class="bal-txt">Disease · 142</span></div>
     </div>
     <div class="bal-legend">
-      <div class="bal-item"><div class="bal-dot" style="background:var(--cart)"></div>No Heart Disease (0) — 160 patients</div>
-      <div class="bal-item"><div class="bal-dot" style="background:var(--c45)"></div>Heart Disease (1) — 142 patients</div>
+      <div class="bal-item"><div class="bal-dot" style="background:var(--cart)"></div>No Heart Disease (0) - 160 patients</div>
+      <div class="bal-item"><div class="bal-dot" style="background:var(--c45)"></div>Heart Disease (1) - 142 patients</div>
     </div>
   </div>
 
@@ -237,7 +237,7 @@ footer span{color:var(--rose);}
     <div class="callout-icon">💡</div>
     <div class="callout-text">
       <strong>Why balance matters</strong>
-      <span>With a roughly 50/50 split, accuracy is a meaningful metric here — unlike imbalanced datasets where a lazy model could score 80% by always predicting the majority class without learning anything.</span>
+      <span>With a roughly 50/50 split, accuracy is a meaningful metric here - unlike imbalanced datasets where a lazy model could score 80% by always predicting the majority class without learning anything.</span>
     </div>
   </div>
 </section>
@@ -250,16 +250,16 @@ footer span{color:var(--rose);}
     <div class="step-badge"><span class="step-badge-num">2</span></div>
     <div><div class="step-tag">Step Two</div><div class="step-title">Preprocessing 🎀</div></div>
   </div>
-  <p class="step-body">Before any learning can happen, the data needs to be cleaned and converted. Decision trees need numbers — so categorical columns get turned into binary yes/no columns using <strong>One-Hot Encoding</strong>.</p>
+  <p class="step-body">Before any learning can happen, the data needs to be cleaned and converted. Decision trees need numbers - so categorical columns get turned into binary yes/no columns using <strong>One-Hot Encoding</strong>.</p>
 
   <div class="card">
-    <div class="card-label">What Happens & Why — Step by Step</div>
+    <div class="card-label">What Happens & Why - Step by Step</div>
     <div class="pipeline">
       <div class="pipe-row">
         <div class="pipe-icon">🗑️</div>
         <div class="pipe-text">
           <strong>Remove Duplicates</strong>
-          <span>The Kaggle heart.csv has 1,025 rows but only 302 are unique. Duplicates leak into both train and test sets, causing fake perfect scores — like the 100% accuracy we saw earlier!</span>
+          <span>The Kaggle heart.csv has 1,025 rows but only 302 are unique. Duplicates leak into both train and test sets, causing fake perfect scores - like the 100% accuracy we saw earlier!</span>
           <div class="pipe-chip">1,025 → 302 rows</div>
         </div>
       </div>
@@ -275,7 +275,7 @@ footer span{color:var(--rose);}
         <div class="pipe-icon">🏷️</div>
         <div class="pipe-text">
           <strong>One-Hot Encode Categoricals</strong>
-          <span>8 categorical columns (sex, cp, fbs, restecg, exang, slope, ca, thal) expand into binary yes/no columns — the model won't treat category 3 as "bigger" than category 1.</span>
+          <span>8 categorical columns (sex, cp, fbs, restecg, exang, slope, ca, thal) expand into binary yes/no columns - the model won't treat category 3 as "bigger" than category 1.</span>
           <div class="pipe-chip">13 features → 28 columns</div>
         </div>
       </div>
@@ -315,7 +315,7 @@ footer span{color:var(--rose);}
       <div class="pipe-row">
         <div class="pipe-icon" style="background:linear-gradient(135deg,#fce4ec,#f9d0de)">🌹</div>
         <div class="pipe-text">
-          <strong>C4.5 — criterion="entropy"</strong>
+          <strong>C4.5 - criterion="entropy"</strong>
           <span>Asks: "Which split most reduces uncertainty?" Uses entropy (information theory). Corrects for attributes with many categories using Gain Ratio. Grew to depth 9 with 33 leaf nodes.</span>
           <div class="pipe-chip" style="color:var(--c45)">Entropy · Gain Ratio · depth 9 · 33 leaves</div>
         </div>
@@ -323,15 +323,15 @@ footer span{color:var(--rose);}
       <div class="pipe-row">
         <div class="pipe-icon" style="background:linear-gradient(135deg,#ede0f5,#ddd0f0)">💜</div>
         <div class="pipe-text">
-          <strong>CART — criterion="gini"</strong>
-          <span>Asks: "Which split minimises misclassification probability?" Uses Gini Impurity — faster maths. Always binary splits. No pruning on small data = overfits badly.</span>
+          <strong>CART - criterion="gini"</strong>
+          <span>Asks: "Which split minimises misclassification probability?" Uses Gini Impurity - faster maths. Always binary splits. No pruning on small data = overfits badly.</span>
           <div class="pipe-chip" style="color:var(--cart)">Gini Impurity · Binary splits · depth ? · 29 leaves</div>
         </div>
       </div>
       <div class="pipe-row">
         <div class="pipe-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🌿</div>
         <div class="pipe-text">
-          <strong>CART Pruned — ccp_alpha tuned by CV</strong>
+          <strong>CART Pruned - ccp_alpha tuned by CV</strong>
           <span>Same as CART but branches that don't justify their complexity are removed. Alpha selected by 5-fold cross-validation on the training set. Reduces to 24 leaves.</span>
           <div class="pipe-chip" style="color:var(--pruned)">Gini · Cost-Complexity Pruning · 24 leaves</div>
         </div>
@@ -348,20 +348,20 @@ footer span{color:var(--rose);}
     <div class="step-badge"><span class="step-badge-num">4</span></div>
     <div><div class="step-tag">Step Four</div><div class="step-title">Performance Metrics 📊</div></div>
   </div>
-  <p class="step-body">Each model is evaluated on the <strong>61 test instances it never saw during training</strong>. Four metrics give us the full picture — because accuracy alone hides class-specific failures.</p>
+  <p class="step-body">Each model is evaluated on the <strong>61 test instances it never saw during training</strong>. Four metrics give us the full picture - because accuracy alone hides class-specific failures.</p>
 
   <div class="card" style="margin-bottom:16px">
     <div class="card-label">What Each Metric Actually Means 💕</div>
     <div class="pipeline">
-      <div class="pipe-row"><div class="pipe-icon">🎯</div><div class="pipe-text"><strong>Accuracy</strong><span>"What % of all predictions were correct?" — Reliable here because classes are balanced.</span></div></div>
-      <div class="pipe-row"><div class="pipe-icon">🔍</div><div class="pipe-text"><strong>Precision</strong><span>"When we predicted disease, how often were we right?" — High precision = few false alarms.</span></div></div>
-      <div class="pipe-row"><div class="pipe-icon">🩺</div><div class="pipe-text"><strong>Recall ← most important</strong><span>"Of all real disease cases, how many did we catch?" — Missing a diagnosis is dangerous. This is the metric that matters most clinically.</span></div></div>
-      <div class="pipe-row"><div class="pipe-icon">⚖️</div><div class="pipe-text"><strong>F1 Score</strong><span>"Balance between precision and recall." — Best single number to rank models fairly.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🎯</div><div class="pipe-text"><strong>Accuracy</strong><span>"What % of all predictions were correct?" - Reliable here because classes are balanced.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🔍</div><div class="pipe-text"><strong>Precision</strong><span>"When we predicted disease, how often were we right?" - High precision = few false alarms.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">🩺</div><div class="pipe-text"><strong>Recall ← most important</strong><span>"Of all real disease cases, how many did we catch?" - Missing a diagnosis is dangerous. This is the metric that matters most clinically.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">⚖️</div><div class="pipe-text"><strong>F1 Score</strong><span>"Balance between precision and recall." - Best single number to rank models fairly.</span></div></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-label">Side-by-Side Comparison — Your Actual Results</div>
+    <div class="card-label">Side-by-Side Comparison - Your Actual Results</div>
 
     <div class="metric-group">
       <div class="metric-group-title">Accuracy</div>
@@ -401,7 +401,7 @@ footer span{color:var(--rose);}
     <div class="step-badge"><span class="step-badge-num">5</span></div>
     <div><div class="step-tag">Step Five</div><div class="step-title">Confusion Matrices 🔢</div></div>
   </div>
-  <p class="step-body">A confusion matrix breaks predictions into four boxes. The most important for heart disease is <strong>False Negatives</strong> — real disease cases the model missed. These are the dangerous errors because the patient goes home thinking they're fine.</p>
+  <p class="step-body">A confusion matrix breaks predictions into four boxes. The most important for heart disease is <strong>False Negatives</strong> - real disease cases the model missed. These are the dangerous errors because the patient goes home thinking they're fine.</p>
 
   <div class="callout">
     <div class="callout-icon">🩺</div>
@@ -430,7 +430,7 @@ footer span{color:var(--rose);}
         <div class="cm-cell fn"><div class="cm-num">11</div><div class="cm-tag">False Neg. ⚠️</div></div>
         <div class="cm-cell tp"><div class="cm-num">22</div><div class="cm-tag">True Pos.</div></div>
       </div>
-      <div class="cm-note">Missed <span class="cm-hl">11 disease cases</span> — worst of the three.</div>
+      <div class="cm-note">Missed <span class="cm-hl">11 disease cases</span> - worst of the three.</div>
     </div>
     <div class="cm-card" style="border:2px solid #86efac">
       <div class="cm-model-name"><div class="cm-model-dot" style="background:var(--pruned)"></div>CART Pruned ✨</div>
@@ -448,7 +448,7 @@ footer span{color:var(--rose);}
     <div class="callout-icon">💡</div>
     <div class="callout-text">
       <strong>The trade-off in plain English</strong>
-      <span>Pruned CART sends more false alarms (10 vs 5 for C4.5) but only misses 4 real cases vs 8. In medicine this is always the right trade-off — a false alarm leads to more tests, a missed diagnosis can be fatal.</span>
+      <span>Pruned CART sends more false alarms (10 vs 5 for C4.5) but only misses 4 real cases vs 8. In medicine this is always the right trade-off - a false alarm leads to more tests, a missed diagnosis can be fatal.</span>
     </div>
   </div>
 </section>
@@ -478,9 +478,9 @@ footer span{color:var(--rose);}
       </div>
     </div>
     <div class="pipeline">
-      <div class="pipe-row"><div class="pipe-icon">1️⃣</div><div class="pipe-text"><strong>Grow the full tree</strong><span>CART builds until training is memorised — 29 leaves, overfit.</span></div></div>
-      <div class="pipe-row"><div class="pipe-icon">2️⃣</div><div class="pipe-text"><strong>Generate candidate alphas</strong><span>The pruning path provides a list of α values — each removes more branches. Higher α = simpler tree.</span></div></div>
-      <div class="pipe-row"><div class="pipe-icon">3️⃣</div><div class="pipe-text"><strong>5-fold cross-validation</strong><span>Training data is split into 5 groups. For each α, train on 4, validate on 1 — five times — average the F1 scores. Every row gets validated exactly once.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">1️⃣</div><div class="pipe-text"><strong>Grow the full tree</strong><span>CART builds until training is memorised - 29 leaves, overfit.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">2️⃣</div><div class="pipe-text"><strong>Generate candidate alphas</strong><span>The pruning path provides a list of α values - each removes more branches. Higher α = simpler tree.</span></div></div>
+      <div class="pipe-row"><div class="pipe-icon">3️⃣</div><div class="pipe-text"><strong>5-fold cross-validation</strong><span>Training data is split into 5 groups. For each α, train on 4, validate on 1 - five times - average the F1 scores. Every row gets validated exactly once.</span></div></div>
       <div class="pipe-row"><div class="pipe-icon">4️⃣</div><div class="pipe-text"><strong>Pick the best α &amp; retrain</strong><span>The α with the highest average CV F1 is used to build the final pruned tree. 29 → 24 leaves.</span><div class="pipe-chip" style="color:var(--pruned)">Recall: 66.7% → 87.9% &nbsp;·&nbsp; F1: 0.698 → 0.806</div></div></div>
     </div>
   </div>
@@ -494,7 +494,7 @@ footer span{color:var(--rose);}
     <div class="step-badge"><span class="step-badge-num">7</span></div>
     <div><div class="step-tag">Step Seven</div><div class="step-title">Feature Importances 🌺</div></div>
   </div>
-  <p class="step-body">After training, the pruned CART model tells us exactly which features it actually used. Remarkably, only <strong>3 features out of 28</strong> do all the work — everything else was pruned away as noise. This makes the model beautifully interpretable.</p>
+  <p class="step-body">After training, the pruned CART model tells us exactly which features it actually used. Remarkably, only <strong>3 features out of 28</strong> do all the work - everything else was pruned away as noise. This makes the model beautifully interpretable.</p>
 
   <div class="card">
     <div class="card-label">What the Model Actually Learned to Look At</div>
@@ -518,15 +518,15 @@ footer span{color:var(--rose);}
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
       <div style="background:var(--bg2);border-radius:10px;padding:16px;border:1px solid var(--rule)">
         <div style="font-weight:700;font-size:13px;color:var(--c45);margin-bottom:6px">🫀 cp_0 · 70.9%</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Asymptomatic chest pain. Patients with heart disease often show no typical symptoms — making its absence a paradoxically strong predictor.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Asymptomatic chest pain. Patients with heart disease often show no typical symptoms - making its absence a paradoxically strong predictor.</div>
       </div>
       <div style="background:var(--lilac-soft);border-radius:10px;padding:16px;border:1px solid #ddd0f0">
         <div style="font-weight:700;font-size:13px;color:var(--cart);margin-bottom:6px">🧬 thal_2 · 17.2%</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Reversible thalassemia defect. Indicates areas of the heart with reduced blood flow under stress — a direct clinical marker of coronary artery disease.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Reversible thalassemia defect. Indicates areas of the heart with reduced blood flow under stress - a direct clinical marker of coronary artery disease.</div>
       </div>
       <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid #86efac">
         <div style="font-weight:700;font-size:13px;color:var(--pruned);margin-bottom:6px">🔬 ca_0 · 12.0%</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Zero major vessels visible by fluoroscopy. Healthy vessels show up clearly — none visible suggests blockages restricting blood flow.</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;font-weight:300">Zero major vessels visible by fluoroscopy. Healthy vessels show up clearly - none visible suggests blockages restricting blood flow.</div>
       </div>
     </div>
   </div>
@@ -535,7 +535,7 @@ footer span{color:var(--rose);}
     <div class="callout-icon">✨</div>
     <div class="callout-text">
       <strong>Clinically meaningful!</strong>
-      <span>All three features the pruned model selected align directly with known cardiac disease indicators in medical literature. A model explainable with just three questions — any clinician could understand and audit every single prediction.</span>
+      <span>All three features the pruned model selected align directly with known cardiac disease indicators in medical literature. A model explainable with just three questions - any clinician could understand and audit every single prediction.</span>
     </div>
   </div>
 </section>
@@ -548,7 +548,7 @@ footer span{color:var(--rose);}
     <div class="step-badge"><span class="step-badge-num">8</span></div>
     <div><div class="step-tag">Step Eight</div><div class="step-title">Final Verdict 🏆</div></div>
   </div>
-  <p class="step-body">Here's the complete picture. Each model has its strengths — but for a medical classification task where <strong>missing a diagnosis is the worst possible error</strong>, CART Pruned wins clearly.</p>
+  <p class="step-body">Here's the complete picture. Each model has its strengths - but for a medical classification task where <strong>missing a diagnosis is the worst possible error</strong>, CART Pruned wins clearly.</p>
 
   <div class="verdict-grid">
     <div class="verdict-card rose">
@@ -556,21 +556,21 @@ footer span{color:var(--rose);}
       <div class="verdict-name">C4.5</div>
       <div class="verdict-score">0.794</div>
       <div style="font-size:11px;font-weight:700;color:var(--c45);margin-bottom:10px">F1 · Best Precision (83.3%)</div>
-      <div class="verdict-body">Most careful about false alarms — only 5. But misses 8 real disease cases. Best choice if sending people for unnecessary tests is very costly. Outperforms unpruned CART overall.</div>
+      <div class="verdict-body">Most careful about false alarms - only 5. But misses 8 real disease cases. Best choice if sending people for unnecessary tests is very costly. Outperforms unpruned CART overall.</div>
     </div>
     <div class="verdict-card lilac">
       <div class="verdict-icon">💜</div>
       <div class="verdict-name">CART</div>
       <div class="verdict-score">0.698</div>
       <div style="font-size:11px;font-weight:700;color:var(--cart);margin-bottom:10px">F1 · Weakest Overall</div>
-      <div class="verdict-body">Overfits on just 241 training rows. Misses 11 disease cases — worst of the three. Without pruning, CART memorises noise instead of learning real patterns on small datasets.</div>
+      <div class="verdict-body">Overfits on just 241 training rows. Misses 11 disease cases - worst of the three. Without pruning, CART memorises noise instead of learning real patterns on small datasets.</div>
     </div>
     <div class="verdict-card green">
       <div class="verdict-icon">🏆</div>
       <div class="verdict-name">CART Pruned</div>
       <div class="verdict-score">0.806</div>
       <div style="font-size:11px;font-weight:700;color:var(--pruned);margin-bottom:10px">F1 · Best Recall (87.9%) · Recommended</div>
-      <div class="verdict-body">Catches 29 of 33 disease cases. Only misses 4. More false alarms (10) but that's the right medical trade-off. Also the most interpretable — just 3 features drive every decision.</div>
+      <div class="verdict-body">Catches 29 of 33 disease cases. Only misses 4. More false alarms (10) but that's the right medical trade-off. Also the most interpretable - just 3 features drive every decision.</div>
     </div>
   </div>
 
