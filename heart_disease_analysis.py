@@ -1,3 +1,19 @@
+import subprocess
+import sys
+
+# libraries auto install
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package, "-q"])
+
+required = ["pandas", "numpy", "scikit-learn"]
+for pkg in required:
+    try:
+        __import__(pkg if pkg != "scikit-learn" else "sklearn")
+    except ImportError:
+        print(f"Installing {pkg}...")
+        install(pkg)
+
+# imports
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -5,13 +21,13 @@ from sklearn.model_selection import train_test_split, cross_val_score, Stratifie
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
-# ── LOAD DATA ──────────────────────────────────────────────
+# load data
 df = pd.read_csv("heart.csv")
-df = df.drop_duplicates().reset_index(drop=True)  # ← add this
+# clean data
+df = df.drop_duplicates().reset_index(drop=True)
 df["target"] = (df["target"] > 0).astype(int)
 
-
-# ── FEATURES ───────────────────────────────────────────────
+#features
 categorical_cols = ["sex", "cp", "fbs", "restecg", "exang", "slope", "ca", "thal"]
 continuous_cols  = ["age", "trestbps", "chol", "thalach", "oldpeak"]
 
@@ -21,12 +37,11 @@ X_num = df[continuous_cols].values
 X     = np.hstack([X_num, X_cat])
 y     = df["target"].values
 
-# ── SPLIT ──────────────────────────────────────────────────
+#split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# ── HELPER FUNCTION ────────────────────────────────────────
 def evaluate(model, label):
     y_pred = model.predict(X_test)
     print(f"\n=== {label} ===")
@@ -36,7 +51,7 @@ def evaluate(model, label):
     print(f"F1 Score  : {f1_score(y_test, y_pred):.4f}")
     print(f"Confusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
 
-# ── C4.5 ───────────────────────────────────────────────────
+# c4.5
 c45 = DecisionTreeClassifier(
     criterion="entropy",
     class_weight="balanced",
@@ -45,7 +60,7 @@ c45 = DecisionTreeClassifier(
 c45.fit(X_train, y_train)
 evaluate(c45, "C4.5")
 
-# ── CART ───────────────────────────────────────────────────
+# cart
 cart = DecisionTreeClassifier(
     criterion="gini",
     class_weight="balanced",
@@ -54,13 +69,12 @@ cart = DecisionTreeClassifier(
 cart.fit(X_train, y_train)
 evaluate(cart, "CART")
 
-# ── CART PRUNED ────────────────────────────────────────────
+# cart pruned
 path   = cart.cost_complexity_pruning_path(X_train, y_train)
 alphas = [a for a in path.ccp_alphas if a > 0]
 skf    = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 best_alpha, best_f1 = 0.0, 0.0
-
 for alpha in alphas[::2]:
     clf = DecisionTreeClassifier(
         criterion="gini",
@@ -82,7 +96,6 @@ cart_pruned = DecisionTreeClassifier(
 cart_pruned.fit(X_train, y_train)
 evaluate(cart_pruned, "CART Pruned")
 
-# ── FEATURE IMPORTANCES ────────────────────────────────────
 feat_names = continuous_cols + ohe.get_feature_names_out(categorical_cols).tolist()
 imps       = cart_pruned.feature_importances_
 top_idx    = np.argsort(imps)[::-1][:10]
